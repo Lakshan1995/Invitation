@@ -100,7 +100,8 @@ section > *{position:relative;z-index:1;}
 @keyframes gateIn{to{opacity:1;transform:none}}
 /* Lord Ganesha — white backdrop blends into the cream via multiply */
 #enterGate .ganesha{display:block;margin:0 auto 4px;width:clamp(130px,42vw,186px);height:auto;
-  filter:drop-shadow(0 6px 18px rgba(194,154,61,.5));animation:ganeshFloat 4.5s ease-in-out infinite;}
+  filter:drop-shadow(0 6px 18px rgba(194,154,61,.5));
+  animation:gateIn 1s ease .15s forwards, ganeshFloat 4.5s ease-in-out 1.3s infinite;}
 @keyframes ganeshFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 #enterGate .g-invoke{font-family:var(--serif);font-size:1.2rem;color:#9a3a2e;}
 #enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;margin-top:2px;}
@@ -112,7 +113,7 @@ section > *{position:relative;z-index:1;}
   background:linear-gradient(135deg,#9c2433,#7c1d2b 60%,#5f141f);color:#fdf4e4;font-family:var(--sans);
   font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;
   box-shadow:0 0 0 2px #c29a3d,0 0 0 5px rgba(217,184,95,.45),0 14px 28px rgba(124,29,43,.4),inset 0 1px 0 rgba(255,255,255,.2);
-  animation:pulseBtn 2.4s ease-in-out infinite;}
+  animation:gateIn 1s ease 1.05s forwards, pulseBtn 2.4s ease-in-out 2.1s infinite;}
 #enterGate .g-btn .lotus{display:inline-block;margin-right:8px;animation:lotusBob 2.2s ease-in-out infinite;}
 #enterGate .g-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%);
   transform:translateX(-140%);animation:btnSweep 3s ease-in-out infinite;}
@@ -389,7 +390,7 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
       <div class="diya l"><div class="flame"></div><div class="bowl"></div></div>
       <div class="diya r"><div class="flame"></div><div class="bowl"></div></div>
       <div class="gate-inner">
-        <img class="ganesha" src="ganesha.png" alt="Lord Ganesha">
+        <img class="ganesha" src="ganesha.png?v=2" alt="Lord Ganesha">
         <div class="g-invoke">பிள்ளையார் துணை</div>
         <p class="g-bless">Shree Ganeshaya Namaha</p>
         <p class="g-sub">You're invited</p>
@@ -558,9 +559,12 @@ vid.addEventListener('ended',reveal);
 
 /* welcome gate: one intentional tap opens the invitation AND starts the music */
 const gate=document.getElementById('enterGate');
+/* lock scrolling until the guest taps Open */
+document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden';
 let entered=false;
 function enterInvite(){
   if(entered)return; entered=true;
+  document.documentElement.style.overflow=''; document.body.style.overflow='';   // unlock scroll
   gate.classList.add('gone');
   try{ vid.currentTime=0; }catch(e){}
   vid.play().catch(()=>{});
