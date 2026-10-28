@@ -493,7 +493,7 @@ mBtn.addEventListener('click',e=>{ e.stopPropagation(); bgm.paused?musicOn():mus
 const cover=document.getElementById('cover');
 const vid=document.getElementById('silkVid');
 const tap=document.getElementById('tapStart');
-const REVEAL_AT=6.2;               // seconds — when the silk has cleared (video is 8s)
+const REVEAL_AT=4.2;               // seconds — reveal content 2s earlier (video is 8s)
 let revealed=false;
 function reveal(){ if(revealed)return; revealed=true; cover.classList.add('revealed'); }
 
