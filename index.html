@@ -82,6 +82,20 @@ section > *{position:relative;z-index:1;}
   background:rgba(231,220,207,.6);color:#5a463f;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;}
 .tap-start.show{display:flex;}
 
+/* welcome gate — one intentional tap to open + start music */
+#enterGate{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 30px;cursor:pointer;transition:opacity .9s ease;
+  background:radial-gradient(130% 90% at 50% 20%,#f6eee2,#e6d0c2 68%,#d9bbab 100%);}
+#enterGate.gone{opacity:0;pointer-events:none;}
+#enterGate .g-om{font-size:2.6rem;color:#c29a3d;line-height:1;text-shadow:0 0 16px rgba(194,154,61,.5);animation:omGlow 3s ease-in-out infinite;}
+#enterGate .g-sub{margin-top:12px;font-size:.64rem;letter-spacing:.4em;text-transform:uppercase;color:#9a3a2e;}
+#enterGate .g-names{font-family:var(--serif);font-size:clamp(1.9rem,8.5vw,2.5rem);color:#7c1d2b;margin:6px 0 2px;line-height:1.1;}
+#enterGate .g-amp{font-family:var(--script);color:#c29a3d;}
+#enterGate .g-btn{margin-top:28px;padding:15px 36px;border:2px solid #c29a3d;border-radius:40px;background:rgba(124,29,43,.92);
+  color:#fdf4e4;font-family:var(--sans);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 10px 24px rgba(124,29,43,.3);animation:pulseBtn 2s ease-in-out infinite;}
+@keyframes pulseBtn{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
 /* the invitation card, revealed under the video */
 .card-under{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:transparent;}
 .card-under .frame{border:2px solid #c29a3d;border-radius:180px 180px 12px 12px;padding:48px 30px 40px;margin:0 30px;text-align:center;position:relative;overflow:hidden;
@@ -337,11 +351,18 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
     <!-- marigold petals + sparkles (filled by JS) -->
     <div class="cover-life" id="coverLife"></div>
     <!-- the real silk-unties video -->
-    <video id="silkVid" muted playsinline preload="auto" autoplay>
+    <video id="silkVid" muted playsinline preload="auto">
       <source src="silk-open.mp4" type="video/mp4">
     </video>
     <div class="tap-start" id="tapStart">Tap to begin ✦</div>
     <div class="scroll-cue">Scroll ↓</div>
+    <!-- welcome gate: one tap opens the invitation AND starts the music -->
+    <div id="enterGate">
+      <div class="g-om">ॐ</div>
+      <p class="g-sub">You're invited</p>
+      <div class="g-names">Lakshan <span class="g-amp">&amp;</span> Vethisha</div>
+      <button class="g-btn" type="button">Tap to Open 🔊</button>
+    </div>
   </section>
 
   <!-- ===== 2. ENGAGEMENT & REGISTRATION INVITATION (box design) ===== -->
@@ -486,8 +507,6 @@ function musicOn(){ bgm.volume=0.4;
   bgm.play().then(()=>{mBtn.classList.add('playing');mBtn.classList.remove('muted');}).catch(()=>{}); }
 function musicOff(){ bgm.pause(); mBtn.classList.remove('playing'); mBtn.classList.add('muted'); }
 mBtn.addEventListener('click',e=>{ e.stopPropagation(); bgm.paused?musicOn():musicOff(); });
-['click','scroll','touchstart','keydown'].forEach(ev=>
-  window.addEventListener(ev,()=>{ if(bgm.paused && !mBtn.dataset.off) musicOn(); },{once:true}));
 
 /* 1. Silk video plays → crossfades into the invitation card */
 const cover=document.getElementById('cover');
@@ -501,9 +520,18 @@ function reveal(){ if(revealed)return; revealed=true; cover.classList.add('revea
 vid.addEventListener('timeupdate',()=>{ if(vid.currentTime>=REVEAL_AT) reveal(); });
 vid.addEventListener('ended',reveal);
 
-/* autoplay fallback: if the browser blocks autoplay, offer a tap */
-vid.play().catch(()=>{ tap.classList.add('show'); });
-tap.addEventListener('click',()=>{ tap.classList.remove('show'); vid.play(); });
+/* welcome gate: one intentional tap opens the invitation AND starts the music */
+const gate=document.getElementById('enterGate');
+let entered=false;
+function enterInvite(){
+  if(entered)return; entered=true;
+  gate.classList.add('gone');
+  try{ vid.currentTime=0; }catch(e){}
+  vid.play().catch(()=>{});
+  musicOn();
+  setTimeout(()=>{ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },900);
+}
+gate.addEventListener('click',enterInvite);
 
 /* safety net: reveal anyway if the video never loads/plays */
 setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
