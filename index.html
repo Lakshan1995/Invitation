@@ -82,19 +82,38 @@ section > *{position:relative;z-index:1;}
   background:rgba(231,220,207,.6);color:#5a463f;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;}
 .tap-start.show{display:flex;}
 
-/* welcome gate — one intentional tap to open + start music */
-#enterGate{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+/* welcome gate — animated entrance with Lord Ganesha's blessing */
+#enterGate{position:absolute;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;overflow:hidden;
   text-align:center;padding:0 30px;cursor:pointer;transition:opacity .9s ease;
-  background:radial-gradient(130% 90% at 50% 20%,#f6eee2,#e6d0c2 68%,#d9bbab 100%);}
+  background:radial-gradient(130% 90% at 50% 18%,#fbf4ea,#ecd8c8 60%,#d9bbab 100%);}
 #enterGate.gone{opacity:0;pointer-events:none;}
-#enterGate .g-om{font-size:2.6rem;color:#c29a3d;line-height:1;text-shadow:0 0 16px rgba(194,154,61,.5);animation:omGlow 3s ease-in-out infinite;}
-#enterGate .g-sub{margin-top:12px;font-size:.64rem;letter-spacing:.4em;text-transform:uppercase;color:#9a3a2e;}
-#enterGate .g-names{font-family:var(--serif);font-size:clamp(1.9rem,8.5vw,2.5rem);color:#7c1d2b;margin:6px 0 2px;line-height:1.1;}
+.gate-mandala{position:absolute;top:50%;left:50%;width:150vw;max-width:620px;height:620px;transform:translate(-50%,-50%);
+  opacity:.16;animation:spin 70s linear infinite;pointer-events:none;}
+.gate-sparks{position:absolute;inset:0;pointer-events:none;}
+.gate-sparks i{position:absolute;width:5px;height:5px;border-radius:50%;background:#e8c56a;
+  box-shadow:0 0 8px 2px rgba(232,180,80,.6);animation:twinkle 3.5s ease-in-out infinite;}
+.gate-inner{position:relative;z-index:2;}
+.gate-inner > *{opacity:0;transform:translateY(18px);animation:gateIn 1s ease forwards;}
+.gate-inner > *:nth-child(1){animation-delay:.15s}.gate-inner > *:nth-child(2){animation-delay:.35s}
+.gate-inner > *:nth-child(3){animation-delay:.5s}.gate-inner > *:nth-child(4){animation-delay:.68s}
+.gate-inner > *:nth-child(5){animation-delay:.85s}.gate-inner > *:nth-child(6){animation-delay:1.05s}
+@keyframes gateIn{to{opacity:1;transform:none}}
+#enterGate .g-invoke{font-family:var(--serif);font-size:1.15rem;color:#9a3a2e;}
+#enterGate .g-om{font-size:3rem;color:#c29a3d;line-height:1;margin:6px 0 2px;text-shadow:0 0 18px rgba(194,154,61,.55);animation:omGlow 3s ease-in-out infinite;}
+#enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;}
+#enterGate .g-sub{margin:16px auto 0;max-width:24ch;font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:#9a3a2e;line-height:1.9;}
+#enterGate .g-names{font-family:var(--serif);font-size:clamp(2rem,9vw,2.7rem);color:#7c1d2b;margin:6px 0 2px;line-height:1.1;}
 #enterGate .g-amp{font-family:var(--script);color:#c29a3d;}
-#enterGate .g-btn{margin-top:28px;padding:15px 36px;border:2px solid #c29a3d;border-radius:40px;background:rgba(124,29,43,.92);
-  color:#fdf4e4;font-family:var(--sans);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;
-  box-shadow:0 10px 24px rgba(124,29,43,.3);animation:pulseBtn 2s ease-in-out infinite;}
-@keyframes pulseBtn{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+#enterGate .g-btn{margin-top:30px;padding:16px 40px;border:2px solid #c29a3d;border-radius:44px;
+  background:linear-gradient(135deg,#8a1f2c,#7c1d2b);color:#fdf4e4;font-family:var(--sans);
+  font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;
+  box-shadow:0 10px 26px rgba(124,29,43,.35),inset 0 1px 0 rgba(255,255,255,.15);animation:pulseBtn 2.2s ease-in-out infinite;}
+#enterGate .g-btn .lotus{display:inline-block;margin-right:7px;animation:lotusBob 2.2s ease-in-out infinite;}
+#enterGate .g-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);
+  transform:translateX(-130%);animation:btnSweep 3s ease-in-out infinite;}
+@keyframes pulseBtn{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes lotusBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-3px) rotate(4deg)}}
+@keyframes btnSweep{0%,60%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
 
 /* the invitation card, revealed under the video */
 .card-under{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:transparent;}
@@ -358,10 +377,16 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
     <div class="scroll-cue">Scroll ↓</div>
     <!-- welcome gate: one tap opens the invitation AND starts the music -->
     <div id="enterGate">
-      <div class="g-om">ॐ</div>
-      <p class="g-sub">You're invited</p>
-      <div class="g-names">Lakshan <span class="g-amp">&amp;</span> Vethisha</div>
-      <button class="g-btn" type="button">Tap to Open 🔊</button>
+      <svg class="gate-mandala" id="gateMandala" viewBox="-100 -100 200 200"></svg>
+      <div class="gate-sparks" id="gateSparks"></div>
+      <div class="gate-inner">
+        <div class="g-invoke">பிள்ளையார் துணை</div>
+        <div class="g-om">ॐ</div>
+        <p class="g-bless">Shree Ganeshaya Namaha</p>
+        <p class="g-sub">You're invited to the engagement &amp; registration of</p>
+        <div class="g-names">Lakshan <span class="g-amp">&amp;</span> Vethisha</div>
+        <button class="g-btn" type="button"><span class="lotus">🪷</span> Open with Blessings</button>
+      </div>
     </div>
   </section>
 
@@ -532,6 +557,13 @@ function enterInvite(){
   setTimeout(()=>{ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },900);
 }
 gate.addEventListener('click',enterInvite);
+/* decorate the welcome gate: rotating mandala + twinkling sparks */
+buildMandala(document.getElementById('gateMandala'));
+(function(){const gs=document.getElementById('gateSparks'); if(!gs)return;
+  for(let i=0;i<14;i++){const s=document.createElement('i');
+    s.style.left=(6+(i*37)%88)+'%'; s.style.top=(8+(i*53)%82)+'%';
+    s.style.animationDelay=(i*0.24)+'s'; s.style.transform='scale('+(0.6+(i%3)*0.3)+')';
+    gs.appendChild(s);} })();
 
 /* safety net: reveal anyway if the video never loads/plays */
 setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
