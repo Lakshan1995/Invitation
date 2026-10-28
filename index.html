@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Lakshan &amp; Vethisha — Registration Invitation</title>
+
+<!-- ================= FONTS ================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   ⚙️  EDIT DETAILS — colours & fonts centralised in :root
+   ========================================================= */
+:root{
+  --blush:        #ddcfc7;   /* page background        */
+  --blush-deep:   #c3aaa0;   /* darker panels          */
+  --blush-light:  #ece3dc;   /* light cards            */
+  --ink:          #665049;   /* main text              */
+  --ink-soft:     #8a7067;   /* secondary text         */
+  --gold:         #c29a3d;   /* temple gold            */
+  --gold-soft:    #d9b85f;
+  --maroon:       #7c1d2b;   /* auspicious deep red    */
+  --rust:         #9a3a2e;
+  --green:        #2f6d2a;   /* mango leaf             */
+  --saffron:      #e8821e;
+  --marigold:     #f4a400;
+  --cream:        #f4ecdf;   /* page / card base       */
+  --cream2:       #efe2cf;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --script:"Pinyon Script", cursive;
+  --sans:  "Jost", "Helvetica Neue", sans-serif;
+  --maxw: 480px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--maroon);background:#2a1013;line-height:1.65;overflow-x:hidden;}
+
+.phone{max-width:var(--maxw);margin:0 auto;background:var(--cream);position:relative;overflow:hidden;box-shadow:0 0 70px rgba(0,0,0,.4);}
+
+section{position:relative;padding:clamp(64px,13vw,104px) clamp(22px,7vw,38px);text-align:center;overflow:hidden;}
+.eyebrow{font-weight:400;letter-spacing:.4em;text-transform:uppercase;font-size:clamp(.6rem,2.8vw,.7rem);color:var(--rust);margin-bottom:18px;}
+.script-name{font-family:var(--script);color:var(--gold);line-height:1;}
+/* small Om atop each section */
+.sec-om{font-size:1.5rem;color:var(--gold);line-height:1;margin-bottom:6px;text-shadow:0 0 12px rgba(194,154,61,.45);}
+
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,8.5vw,2.6rem);letter-spacing:.02em;margin:4px 0 8px;color:var(--maroon);}
+p.body{font-size:clamp(.9rem,3.6vw,.98rem);color:#6b4a3a;max-width:32ch;margin:0 auto;}
+
+/* gold ornament divider */
+.orn{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px auto;color:var(--gold);max-width:160px;}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);}
+.orn span{font-size:.9rem;transform:translateY(-1px);}
+
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1.1s ease,transform 1.1s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+.emboss-bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(120% 90% at 50% 100%, rgba(0,0,0,.07), transparent 60%);}
+section > *{position:relative;z-index:1;}
+
+/* reusable oval photo */
+.photo-oval{width:210px;height:262px;margin:0 auto;border-radius:50%;overflow:hidden;
+  border:1px solid var(--gold);box-shadow:0 14px 34px rgba(0,0,0,.22),0 0 0 7px var(--blush-light),0 0 0 8px var(--gold-soft);}
+.photo-oval img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+
+/* ======================= 1. COVER — silk video plays, then crossfades to the card ======================= */
+#cover{height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;padding:0;position:relative;overflow:hidden;
+  background:#f4ecdf;}   /* ivory base — flows from the silk video's cream end-frame */
+
+/* the silk reveal video fills the cover */
+#silkVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:5;
+  transition:opacity 1.4s ease;}
+#cover.revealed #silkVid{opacity:0;pointer-events:none;}
+
+/* tap-to-start fallback if autoplay is blocked */
+.tap-start{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;
+  background:rgba(231,220,207,.6);color:#5a463f;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;}
+.tap-start.show{display:flex;}
+
+/* the invitation card, revealed under the video */
+.card-under{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:transparent;}
+.card-under .frame{border:2px solid #c29a3d;border-radius:180px 180px 12px 12px;padding:48px 30px 40px;margin:0 30px;text-align:center;position:relative;overflow:hidden;
+  background:rgba(255,251,244,.55);box-shadow:0 10px 30px rgba(124,29,43,.12);
+  animation:archGlow 4.5s ease-in-out infinite;}
+.card-under .frame::before{content:"";position:absolute;inset:7px;border:1px solid #d9b85f;border-radius:172px 172px 8px 8px;opacity:.7;pointer-events:none;}
+@keyframes archGlow{0%,100%{box-shadow:0 10px 30px rgba(124,29,43,.12)}50%{box-shadow:0 10px 30px rgba(124,29,43,.12),0 0 26px rgba(232,130,30,.45)}}
+/* gold shimmer sweeping across the arch */
+.shine{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(118deg,transparent 32%,rgba(255,255,255,.55) 50%,transparent 68%);
+  transform:translateX(-130%);animation:shine 5s ease-in-out infinite;}
+@keyframes shine{0%,55%{transform:translateX(-130%)}85%,100%{transform:translateX(130%)}}
+.card-under .frame::after{content:"";position:absolute;inset:7px;border:1px solid var(--gold-soft);border-radius:172px 172px 8px 8px;opacity:.6;}
+.card-inner{opacity:0;transform:translateY(16px);transition:opacity 1.2s ease,transform 1.2s ease;}
+#cover.revealed .card-inner{opacity:1;transform:none;}
+.card-under .eyebrow{color:#9a3a2e;letter-spacing:.4em;}
+.card-under .big{font-family:var(--serif);font-size:2.8rem;line-height:1.05;color:#7c1d2b;}
+.card-under .amp{font-family:var(--script);color:#c29a3d;display:block;font-size:3.1rem;margin:2px 0;}
+.card-under .date{margin-top:14px;font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:#9a3a2e;}
+.card-under .venue{margin-top:6px;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:#7c5a2a;}
+
+.scroll-cue{position:absolute;bottom:36px;left:0;right:0;z-index:7;font-size:.64rem;letter-spacing:.32em;text-transform:uppercase;color:#5a463f;opacity:0;transition:opacity 1s ease;animation:bob 2s ease-in-out infinite;}
+#cover.revealed .scroll-cue{opacity:.75;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* ---------- LIVELY HINDU / TAMIL COVER ---------- */
+/* slowly rotating gold mandalas behind the arch */
+.mandala{position:absolute;top:50%;left:50%;width:124vw;max-width:580px;height:580px;
+  transform:translate(-50%,-50%);z-index:1;opacity:.20;pointer-events:none;animation:spin 80s linear infinite;}
+.mandala.m2{max-width:400px;height:400px;opacity:.14;animation:spin 110s linear infinite reverse;}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* self-drawing kolam (rangoli) */
+.kolam{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);width:150px;height:150px;z-index:1;pointer-events:none;}
+.kolam circle.draw{fill:none;stroke:#c29a3d;stroke-width:2.2;stroke-linecap:round;}
+.kolam .dot{fill:#9a3a2e;}
+
+/* thoranam — mango-leaf + marigold garland across the top */
+.thoranam{position:absolute;top:0;left:0;right:0;height:118px;z-index:4;pointer-events:none;}
+.hang{position:absolute;top:0;transform-origin:top center;animation:sway 4s ease-in-out infinite;}
+.leaf{width:14px;height:30px;border-radius:50% 50% 50% 50%/72% 72% 38% 38%;
+  background:linear-gradient(180deg,#5aa84a,#2f6d2a);box-shadow:inset -2px 0 3px rgba(0,0,0,.18);}
+.mari{width:19px;height:19px;border-radius:50%;margin:3px auto 0;
+  background:radial-gradient(circle at 50% 45%,#ffd24a 16%,#f4a400 42%,#e8821e 72%,#cf5f16);
+  box-shadow:0 0 0 2px rgba(244,164,0,.35),0 1px 3px rgba(0,0,0,.2);}
+@keyframes sway{0%,100%{transform:rotate(-4.5deg)}50%{transform:rotate(4.5deg)}}
+
+/* diya lamps flickering at the bottom corners */
+.diya{position:absolute;bottom:6%;z-index:4;width:56px;pointer-events:none;}
+.diya.l{left:14%;} .diya.r{right:14%;}
+.diya .flame{width:13px;height:25px;margin:0 auto;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(circle at 50% 72%,#fff3b0,#ffb52e 52%,#ff6a00);transform-origin:bottom center;
+  box-shadow:0 0 18px 5px rgba(255,150,30,.6);animation:flicker 1.5s ease-in-out infinite;}
+.diya .bowl{width:50px;height:15px;margin:-1px auto 0;border-radius:0 0 50% 50%/0 0 100% 100%;
+  background:linear-gradient(180deg,#e0ad4a,#8a5a1e);box-shadow:inset 0 2px 3px rgba(255,255,255,.3);}
+@keyframes flicker{0%,100%{transform:scaleY(1) rotate(-2deg);opacity:1}50%{transform:scaleY(1.16) rotate(2deg);opacity:.86}}
+
+/* ॐ / Pillaiyar Suzhi glowing at the top of the arch */
+.om{font-size:2.3rem;color:#c29a3d;line-height:1;margin-bottom:8px;animation:omGlow 3s ease-in-out infinite;}
+@keyframes omGlow{0%,100%{text-shadow:0 0 10px rgba(194,154,61,.4)}50%{text-shadow:0 0 22px rgba(232,130,30,.85)}}
+
+/* floating marigold petals + golden sparkles */
+.cover-life{position:absolute;inset:0;z-index:3;overflow:hidden;pointer-events:none;}
+.petal{position:absolute;top:-24px;width:13px;height:9px;border-radius:60% 60% 60% 60%/80% 80% 40% 40%;
+  opacity:.9;will-change:transform;animation:fallsway linear infinite;}
+@keyframes fallsway{0%{transform:translate(0,-30px) rotate(0)}25%{transform:translate(20px,25vh) rotate(90deg)}
+  50%{transform:translate(-14px,50vh) rotate(180deg)}75%{transform:translate(18px,75vh) rotate(270deg)}
+  100%{transform:translate(0,108vh) rotate(360deg)}}
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;background:#ffe9a8;
+  box-shadow:0 0 7px 2px rgba(255,200,80,.5);animation:twinkle 4s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:.95;transform:scale(1.1)}}
+
+/* ===== shared Hindu decorative patterns (each section uses a different one) ===== */
+.orn span{color:var(--gold);}
+.orn::before,.orn::after{background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);}
+
+/* kolam pulli (dot) grid — faint background */
+.dotgrid::before{content:"";position:absolute;inset:0;z-index:0;opacity:.45;pointer-events:none;
+  background-image:radial-gradient(var(--gold-soft) 1.3px,transparent 1.6px);background-size:26px 26px;}
+/* mango-leaf band across the very top of a section */
+.mango-band{position:absolute;top:0;left:0;right:0;height:22px;z-index:1;display:flex;justify-content:center;gap:5px;overflow:hidden;pointer-events:none;}
+.mango-band i{width:11px;height:22px;flex:0 0 auto;border-radius:50% 50% 50% 50%/70% 70% 40% 40%;
+  background:linear-gradient(180deg,#5aa84a,var(--green));box-shadow:inset -2px 0 3px rgba(0,0,0,.18);}
+/* marigold string divider */
+.mari-div{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 22px;}
+.mari-div i{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 50% 45%,#ffd24a,var(--marigold) 55%,#cf5f16);
+  box-shadow:0 1px 2px rgba(0,0,0,.2);}
+.mari-div .line{width:42px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);}
+/* faint rotating mandala watermark behind a section */
+.sec-mandala{position:absolute;z-index:0;opacity:.12;pointer-events:none;width:340px;height:340px;animation:spin 90s linear infinite;}
+.sec-mandala.tr{top:-90px;right:-110px;} .sec-mandala.bl{bottom:-100px;left:-120px;animation-direction:reverse;}
+/* corner kolam ornaments */
+.corner-k{position:absolute;z-index:0;width:74px;height:74px;opacity:.5;pointer-events:none;}
+.corner-k.tl{top:10px;left:10px;} .corner-k.tr{top:10px;right:10px;transform:rotate(90deg);}
+.corner-k.bl{bottom:10px;left:10px;transform:rotate(-90deg);} .corner-k.br{bottom:10px;right:10px;transform:rotate(180deg);}
+
+/* ======================= 2. ENGAGEMENT & REGISTRATION (box design) ======================= */
+#invite{background:var(--cream);}
+.ebox{position:relative;max-width:380px;margin:10px auto 0;padding:clamp(30px,7vw,42px) clamp(20px,6vw,30px) clamp(28px,6vw,36px);
+  background:rgba(255,252,246,.72);border:2px solid var(--gold);border-radius:14px;box-shadow:0 14px 36px rgba(124,29,43,.12);}
+.ebox::before{content:"";position:absolute;inset:7px;border:1px solid var(--gold-soft);border-radius:9px;opacity:.65;pointer-events:none;}
+.ebox .cz{position:absolute;width:9px;height:9px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 0 2px var(--cream);}
+.ebox .cz.a{top:-6px;left:-6px}.ebox .cz.b{top:-6px;right:-6px}.ebox .cz.c{bottom:-6px;left:-6px}.ebox .cz.d{bottom:-6px;right:-6px}
+.ebox-fam{font-size:clamp(.62rem,3vw,.7rem);letter-spacing:.3em;text-transform:uppercase;color:var(--rust);}
+.ebox-names{margin:12px 0 6px;}
+.pname{font-family:var(--serif);font-size:clamp(1.9rem,8.8vw,2.45rem);color:var(--maroon);line-height:1.08;}
+.amp2{font-family:var(--script);color:var(--gold);font-size:clamp(1.7rem,7.5vw,2.1rem);display:block;margin:3px 0;}
+/* qualification — serif text under each name, centered, subtle gold shimmer (stays readable) */
+.qual{display:block;margin-top:3px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(.9rem,4vw,1.08rem);letter-spacing:.01em;text-align:center;
+  background:linear-gradient(100deg,#7a4e16 0%,#9c6f1e 38%,#caa33e 50%,#9c6f1e 62%,#7a4e16 100%);
+  background-size:200% 100%;-webkit-background-clip:text;background-clip:text;
+  color:#8a5a1e;-webkit-text-fill-color:transparent;animation:shineBg 6s linear infinite;}
+.pname:last-of-type .qual{animation-delay:2s}
+@keyframes shineBg{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.ebox-intro{font-size:clamp(.84rem,3.6vw,.94rem);color:#6b4a3a;margin-top:4px;}
+/* cooler box: glow pulse, twinkling corners, sweeping sheen, bobbing icons */
+.ebox{animation:eboxGlow 4.5s ease-in-out infinite;}
+@keyframes eboxGlow{0%,100%{box-shadow:0 14px 36px rgba(124,29,43,.12)}50%{box-shadow:0 14px 36px rgba(124,29,43,.14),0 0 26px rgba(232,130,30,.32)}}
+.ebox .cz{animation:czTwinkle 2.6s ease-in-out infinite;}
+.ebox .cz.b{animation-delay:.6s}.ebox .cz.c{animation-delay:1.2s}.ebox .cz.d{animation-delay:1.8s}
+@keyframes czTwinkle{0%,100%{opacity:.55;transform:rotate(45deg) scale(.9)}50%{opacity:1;transform:rotate(45deg) scale(1.2)}}
+.boxshine{position:absolute;inset:0;border-radius:14px;overflow:hidden;pointer-events:none;}
+.boxshine::before{content:"";position:absolute;top:0;left:0;width:55%;height:100%;
+  background:linear-gradient(110deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-170%) skewX(-12deg);
+  animation:boxSweep 6.5s ease-in-out infinite;}
+@keyframes boxSweep{0%,72%{transform:translateX(-170%) skewX(-12deg)}100%{transform:translateX(280%) skewX(-12deg)}}
+.events{display:flex;align-items:stretch;justify-content:center;gap:10px;margin:20px 0 10px;}
+.evt{flex:1 1 0;min-width:0;background:var(--cream);border:1px solid var(--gold-soft);border-radius:11px;padding:16px 8px 14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
+.evt-ic{font-size:1.7rem;line-height:1;animation:iconBob 2.8s ease-in-out infinite;}
+.evt:last-child .evt-ic{animation-delay:1.4s}
+@keyframes iconBob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.1)}}
+.evt-name{font-family:var(--serif);font-size:clamp(1.05rem,4.6vw,1.2rem);color:var(--maroon);margin-top:6px;}
+.evt-sub{font-size:clamp(.66rem,3vw,.74rem);color:var(--gold);margin-top:1px;}
+.evt-time{margin-top:9px;font-size:clamp(.72rem,3.2vw,.8rem);letter-spacing:.1em;color:var(--rust);font-weight:500;}
+.evt-arrow{display:flex;align-items:center;color:var(--gold);font-size:1.25rem;flex:0 0 auto;}
+.ebox-when{margin-top:14px;font-size:clamp(.74rem,3.3vw,.82rem);letter-spacing:.14em;color:var(--rust);line-height:2;}
+@media(max-width:360px){.events{flex-direction:column;}.evt-arrow{transform:rotate(90deg);justify-content:center;}}
+
+/* ======================= 3. THE COUPLE — scratch to reveal ======================= */
+#couple{background:var(--cream2);padding-block:clamp(46px,10vw,70px);}
+.scratch-stage{position:relative;display:inline-block;margin:22px auto 0;}
+/* swiping finger hint — suggests scratching, hides once started */
+.scratch-finger{position:absolute;top:50%;z-index:7;font-size:2.1rem;pointer-events:none;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));animation:fswipe 1.9s ease-in-out infinite;}
+@keyframes fswipe{0%,100%{left:20%;transform:translateY(-50%) rotate(-10deg) scale(1)}
+  50%{left:62%;transform:translateY(-50%) rotate(10deg) scale(.9)}}
+.scratch-stage.scratching .scratch-finger{opacity:0;transition:opacity .35s ease;}
+.scratch{position:relative;width:min(74vw,262px);height:min(74vw,262px);border-radius:50%;overflow:hidden;
+  border:3px solid var(--gold);box-shadow:0 0 0 7px var(--cream2),0 0 0 9px var(--gold-soft),0 16px 36px rgba(124,29,43,.26);}
+.scratch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 32%;transform-origin:center;}
+.scratch canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;}
+.scratch.done canvas{transition:opacity .6s ease;opacity:0;pointer-events:none;}
+/* celebratory reveal */
+.scratch.done img{animation:photoPop .9s cubic-bezier(.2,.8,.3,1.25);}
+.scratch.done{animation:ringGlow 1.4s ease-out;}
+@keyframes photoPop{0%{transform:scale(1.08)}45%{transform:scale(.96)}75%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes ringGlow{0%,100%{box-shadow:0 0 0 7px var(--cream2),0 0 0 9px var(--gold-soft),0 16px 36px rgba(124,29,43,.26)}
+  45%{box-shadow:0 0 0 7px var(--cream2),0 0 0 9px var(--gold-soft),0 0 46px 16px rgba(244,164,0,.65)}}
+/* particle burst */
+.burst{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:6;}
+.burst i{position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;opacity:0;will-change:transform,opacity;}
+.burst i.on{animation:burstOut .95s ease-out forwards;}
+@keyframes burstOut{0%{opacity:1;transform:translate(-50%,-50%) scale(.3) rotate(0)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1) rotate(var(--rot))}}
+.scratch-hint{margin-top:18px;font-size:clamp(.66rem,3vw,.74rem);letter-spacing:.14em;color:var(--rust);transition:all .5s ease;}
+.scratch-hint.revealed{font-weight:600;color:var(--maroon);letter-spacing:.2em;}
+
+/* ======================= 4. COUNTDOWN ======================= */
+#countdown{background:var(--maroon);color:#f4ecdf;}
+#countdown .eyebrow{color:var(--gold-soft);}
+#countdown h2{color:#fdf4e4;}
+#countdown .sec-om{color:var(--gold-soft);}
+.timer{display:flex;justify-content:center;gap:clamp(6px,2.4vw,10px);margin:26px 0 10px;flex-wrap:nowrap;}
+.unit{background:var(--cream);border-radius:10px;padding:clamp(12px,3.6vw,18px) clamp(6px,2.4vw,10px);min-width:clamp(58px,17vw,70px);
+  border:1px solid var(--gold-soft);box-shadow:0 6px 16px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.6);}
+.unit b{display:block;font-family:var(--serif);font-size:clamp(1.7rem,7vw,2.2rem);line-height:1;color:var(--maroon);}
+.unit small{font-size:clamp(.5rem,2.2vw,.58rem);letter-spacing:.18em;text-transform:uppercase;color:var(--rust);}
+.cd-note{margin-top:18px;font-size:clamp(.74rem,3.3vw,.82rem);letter-spacing:.1em;color:var(--gold-soft);}
+
+/* ======================= 5. LOCATION (venue sketch) ======================= */
+#location{background:var(--cream);}
+.venue-frame{width:min(92%,420px);margin:24px auto 0;padding:10px;background:#fffdf8;border:2px solid var(--gold);border-radius:12px;
+  box-shadow:0 14px 34px rgba(124,29,43,.16);position:relative;}
+.venue-frame::after{content:"";position:absolute;inset:5px;border:1px solid var(--gold-soft);border-radius:8px;pointer-events:none;}
+.venue-frame img{width:100%;display:block;border-radius:6px;}
+.venue-name{font-family:var(--serif);font-size:clamp(1.3rem,6vw,1.6rem);color:var(--maroon);margin-top:20px;}
+.map-link{display:inline-block;margin-top:22px;padding:15px 38px;border:2px solid var(--gold);border-radius:40px;background:var(--gold);
+  font-size:clamp(.64rem,3vw,.7rem);letter-spacing:.24em;text-transform:uppercase;color:#fff;text-decoration:none;transition:.3s;
+  box-shadow:0 8px 20px rgba(194,154,61,.4);}
+.map-link:hover{background:var(--maroon);border-color:var(--maroon);}
+
+/* ======================= 6. THE DAY ======================= */
+#schedule{background:var(--cream2);}
+.timeline{max-width:320px;margin:26px auto 0;text-align:left;position:relative;}
+.timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:1.5px;background:var(--gold);opacity:.55;}
+.event{position:relative;padding:0 0 30px 46px;}
+.event::before{content:"";position:absolute;left:4px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--cream);border:2px solid var(--gold);
+  box-shadow:0 0 0 3px rgba(194,154,61,.18);}
+.event .t{font-family:var(--serif);font-size:1.2rem;color:var(--gold);}
+.event .n{font-size:clamp(.72rem,3.2vw,.78rem);letter-spacing:.2em;text-transform:uppercase;color:var(--maroon);}
+.event .d{font-size:clamp(.78rem,3.4vw,.84rem);color:#6b4a3a;}
+
+/* ======================= 7. FOOTER ======================= */
+footer{background:var(--maroon);text-align:center;padding:clamp(60px,14vw,84px) 34px clamp(70px,16vw,92px);position:relative;overflow:hidden;}
+footer .sec-om{color:var(--gold-soft);font-size:1.9rem;}
+footer .amp{font-family:var(--script);font-size:clamp(2.2rem,10vw,3rem);color:var(--gold-soft);display:block;}
+footer .big{font-family:var(--serif);font-size:clamp(1.6rem,8vw,2rem);color:#fdf4e4;}
+footer small{display:block;margin-top:16px;font-size:clamp(.56rem,2.6vw,.64rem);letter-spacing:.3em;text-transform:uppercase;color:var(--gold-soft);}
+/* floating music toggle */
+.music-toggle{position:fixed;bottom:16px;right:16px;z-index:60;width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--gold-soft);background:rgba(124,29,43,.9);color:#fdf4e4;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:opacity .3s,transform .3s;}
+.music-toggle.playing{animation:spinSlow 7s linear infinite;}
+.music-toggle.muted{opacity:.55;}
+.music-toggle:hover{transform:scale(1.08);}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+footer .foot-line{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,6vw,1.7rem);color:#fdf4e4;line-height:1.5;margin-top:6px;}
+footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing:.1em;}
+</style>
+</head>
+
+<body>
+<div class="phone">
+
+  <!-- ===== 1. COVER — silk video unwraps, then crossfades to the lively Hindu card ===== -->
+  <section id="cover">
+    <!-- rotating gold mandalas (filled by JS) -->
+    <svg class="mandala"    id="mandala1" viewBox="-100 -100 200 200"></svg>
+    <svg class="mandala m2" id="mandala2" viewBox="-100 -100 200 200"></svg>
+    <!-- thoranam garland across the top (filled by JS) -->
+    <div class="thoranam" id="thoranam"></div>
+    <!-- invitation revealed under the video -->
+    <div class="card-under">
+      <div class="frame">
+        <div class="shine"></div>
+        <div class="card-inner">
+          <div class="om">ॐ</div>
+          <p class="eyebrow">In the presence of family &amp; the divine</p>
+          <div class="big">Lakshan<span class="amp">&amp;</span>Vethisha</div>
+          <p class="date">24 · 01 · 2027</p>
+          <p class="venue">Ambals Place · Hatton</p>
+        </div>
+      </div>
+    </div>
+    <!-- self-drawing kolam -->
+    <svg class="kolam" id="kolam" viewBox="0 0 150 150"></svg>
+    <!-- diya lamps -->
+    <div class="diya l"><div class="flame"></div><div class="bowl"></div></div>
+    <div class="diya r"><div class="flame"></div><div class="bowl"></div></div>
+    <!-- marigold petals + sparkles (filled by JS) -->
+    <div class="cover-life" id="coverLife"></div>
+    <!-- the real silk-unties video -->
+    <video id="silkVid" muted playsinline preload="auto" autoplay>
+      <source src="silk-open.mp4" type="video/mp4">
+    </video>
+    <div class="tap-start" id="tapStart">Tap to begin ✦</div>
+    <div class="scroll-cue">Scroll ↓</div>
+  </section>
+
+  <!-- ===== 2. ENGAGEMENT & REGISTRATION INVITATION (box design) ===== -->
+  <section id="invite" class="dotgrid">
+    <svg class="sec-mandala tr sm" viewBox="-100 -100 200 200"></svg>
+    <div class="reveal">
+      <div class="sec-om">ॐ</div>
+      <p class="eyebrow">Invitation</p>
+      <div class="ebox">
+        <span class="cz a"></span><span class="cz b"></span><span class="cz c"></span><span class="cz d"></span>
+        <span class="boxshine"></span>
+        <p class="ebox-fam">Together with their families</p>
+        <div class="ebox-names">
+          <div class="pname">Lakshan<span class="qual">BEng (Hons) in SE</span></div>
+          <span class="amp2">&amp;</span>
+          <div class="pname">Vethisha<span class="qual">BBA (Hons) in HRM</span></div>
+        </div>
+        <p class="ebox-intro">joyfully invite you to their</p>
+        <div class="events">
+          <div class="evt">
+            <div class="evt-ic">💍</div>
+            <div class="evt-name">Engagement</div>
+            <div class="evt-sub">நிச்சயம்</div>
+            <div class="evt-time">10:00 AM</div>
+          </div>
+          <div class="evt-arrow">➜</div>
+          <div class="evt">
+            <div class="evt-ic">📜</div>
+            <div class="evt-name">Registration</div>
+            <div class="evt-sub">பதிவு</div>
+            <div class="evt-time">3:00 PM</div>
+          </div>
+        </div>
+        <div class="mari-div"><span class="line"></span><i></i><span class="line"></span></div>
+        <p class="ebox-when">SUNDAY · 24 JANUARY 2027<br>AMBALS PLACE · HATTON</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. THE COUPLE — scratch to reveal ===== -->
+  <section id="couple">
+    <svg class="corner-k tl ck" viewBox="0 0 90 90"></svg>
+    <svg class="corner-k br ck" viewBox="0 0 90 90"></svg>
+    <div class="reveal">
+      <p class="eyebrow">The couple to be</p>
+      <div class="scratch-stage">
+        <div class="scratch" id="scratch">
+          <img src="couple-sketch.jpg" alt="The couple">
+          <canvas id="scratchCanvas"></canvas>
+        </div>
+        <div class="scratch-finger" id="scratchFinger">👆</div>
+        <div class="burst" id="burst"></div>
+      </div>
+      <p class="scratch-hint" id="scratchHint">Scratch to reveal who said “Yes” 💍</p>
+    </div>
+  </section>
+
+  <!-- ===== 4. COUNTDOWN ===== -->
+  <section id="countdown">
+    <svg class="sec-mandala bl sm" viewBox="-100 -100 200 200"></svg>
+    <div class="reveal">
+      <div class="sec-om">ॐ</div>
+      <p class="eyebrow">The auspicious day awaits</p>
+      <h2>Countdown</h2>
+      <div class="mari-div"><span class="line"></span><i></i><span class="line"></span></div>
+      <div class="timer">
+        <div class="unit"><b id="cd-d">00</b><small>Days</small></div>
+        <div class="unit"><b id="cd-h">00</b><small>Hours</small></div>
+        <div class="unit"><b id="cd-m">00</b><small>Minutes</small></div>
+        <div class="unit"><b id="cd-s">00</b><small>Seconds</small></div>
+      </div>
+      <p class="cd-note">Until 24 January 2027</p>
+    </div>
+  </section>
+
+  <!-- ===== 5. LOCATION (venue sketch) ===== -->
+  <section id="location">
+    <div class="mango-band" id="mangoBand"></div>
+    <div class="reveal">
+      <div class="sec-om">ॐ</div>
+      <p class="eyebrow">Join us at</p>
+      <h2>The Venue</h2>
+      <div class="mari-div"><span class="line"></span><i></i><span class="line"></span></div>
+      <div class="venue-frame"><img src="venue-sketch.jpg" alt="Ambals Place, Hatton"></div>
+      <p class="venue-name">Ambals Place</p>
+      <p class="body">Hatton, Sri Lanka</p>
+      <a class="map-link" href="https://share.google/q2TKcwwDaob66CxYe" target="_blank" rel="noopener">Get Directions</a>
+    </div>
+  </section>
+
+  <!-- ===== 6. THE DAY ===== -->
+  <section id="schedule" class="dotgrid">
+    <svg class="corner-k tr ck" viewBox="0 0 90 90"></svg>
+    <svg class="corner-k bl ck" viewBox="0 0 90 90"></svg>
+    <div class="reveal">
+      <div class="sec-om">ॐ</div>
+      <p class="eyebrow">Order of the day</p>
+      <h2>The Ceremonies</h2>
+      <div class="mari-div"><span class="line"></span><i></i><span class="line"></span></div>
+      <div class="timeline">
+        <div class="event"><div class="t">9:30 AM</div><div class="n">Welcome</div><div class="d">Arrival of guests</div></div>
+        <div class="event"><div class="t">9:45 AM</div><div class="n">Ganesh Pooja</div><div class="d">Auspicious prayers</div></div>
+        <div class="event"><div class="t">10:00 AM</div><div class="n">Engagement</div><div class="d">Nichayam &amp; exchange of rings</div></div>
+        <div class="event"><div class="t">12:30 PM</div><div class="n">Lunch</div><div class="d">Celebration &amp; feast</div></div>
+        <div class="event"><div class="t">3:00 PM</div><div class="n">Registration</div><div class="d">Signing of the register</div></div>
+        <div class="event"><div class="t">3:30 PM</div><div class="n">Blessings</div><div class="d">Exchange of garlands</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. FOOTER ===== -->
+  <footer>
+    <svg class="sec-mandala tr sm" viewBox="-100 -100 200 200"></svg>
+    <div class="reveal">
+      <div class="sec-om">ॐ</div>
+      <p class="eyebrow" style="color:var(--gold-soft)">With the blessings of elders &amp; the Almighty</p>
+      <p class="foot-line">Your presence &amp; blessings<br>would mean the world to us</p>
+      <div class="mari-div"><span class="line"></span><i></i><span class="line"></span></div>
+      <small>24 · 01 · 2027 · Ambals Place, Hatton</small>
+      <div class="namaskaram">🙏 Namaskaram 🙏</div>
+    </div>
+  </footer>
+
+  <!-- background music -->
+  <audio id="bgm" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+  <button class="music-toggle muted" id="musicToggle" aria-label="Toggle music">♪</button>
+
+</div>
+
+<!-- ================= GSAP (free CDN) ================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ⚙️ Registration date: 24 Jan 2027, 10:30 AM  (month is 0-indexed → Jan = 0) */
+const WEDDING_DATE = new Date(2027, 0, 24, 10, 30, 0);
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* 0. Background music — starts on first interaction, toggle with the ♪ button */
+const bgm=document.getElementById('bgm'), mBtn=document.getElementById('musicToggle');
+function musicOn(){ bgm.volume=0.4;
+  bgm.play().then(()=>{mBtn.classList.add('playing');mBtn.classList.remove('muted');}).catch(()=>{}); }
+function musicOff(){ bgm.pause(); mBtn.classList.remove('playing'); mBtn.classList.add('muted'); }
+mBtn.addEventListener('click',e=>{ e.stopPropagation(); bgm.paused?musicOn():musicOff(); });
+['click','scroll','touchstart','keydown'].forEach(ev=>
+  window.addEventListener(ev,()=>{ if(bgm.paused && !mBtn.dataset.off) musicOn(); },{once:true}));
+
+/* 1. Silk video plays → crossfades into the invitation card */
+const cover=document.getElementById('cover');
+const vid=document.getElementById('silkVid');
+const tap=document.getElementById('tapStart');
+const REVEAL_AT=6.2;               // seconds — when the silk has cleared (video is 8s)
+let revealed=false;
+function reveal(){ if(revealed)return; revealed=true; cover.classList.add('revealed'); }
+
+/* reveal the card as the silk finishes clearing */
+vid.addEventListener('timeupdate',()=>{ if(vid.currentTime>=REVEAL_AT) reveal(); });
+vid.addEventListener('ended',reveal);
+
+/* autoplay fallback: if the browser blocks autoplay, offer a tap */
+vid.play().catch(()=>{ tap.classList.add('show'); });
+tap.addEventListener('click',()=>{ tap.classList.remove('show'); vid.play(); });
+
+/* safety net: reveal anyway if the video never loads/plays */
+setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
+
+/* 1b. Populate the Hindu cover: mandala, thoranam, kolam, marigold petals, sparkles */
+const SVGNS="http://www.w3.org/2000/svg";
+function svg(tag,attrs){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+/* rotating mandalas: concentric rings + petal ring + dot ring */
+function buildMandala(el){
+  [22,40,58,78,92].forEach(r=>el.appendChild(svg('circle',{cx:0,cy:0,r,fill:'none',stroke:'#c29a3d','stroke-width':1})));
+  const P=20;                                   // lotus petals
+  for(let i=0;i<P;i++){const a=i*2*Math.PI/P;
+    const pe=svg('ellipse',{cx:0,cy:-68,rx:7,ry:17,fill:'none',stroke:'#c29a3d','stroke-width':1});
+    pe.setAttribute('transform','rotate('+(i*360/P)+')'); el.appendChild(pe);}
+  const D=36;                                   // outer dot ring (kolam dots)
+  for(let i=0;i<D;i++){const a=i*2*Math.PI/D;
+    el.appendChild(svg('circle',{cx:Math.cos(a)*96,cy:Math.sin(a)*96,r:1.6,fill:'#c29a3d'}));}
+}
+buildMandala(document.getElementById('mandala1'));
+buildMandala(document.getElementById('mandala2'));
+
+/* kolam: a flower-of-circles rangoli that draws itself, with pulli (dots) */
+(function buildKolam(){
+  const el=document.getElementById('kolam'), cx=75, cy=75, R=26;
+  const circles=[{x:cx,y:cy}];
+  for(let i=0;i<6;i++){const a=i*Math.PI/3; circles.push({x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R});}
+  circles.forEach((c,i)=>{
+    const cir=svg('circle',{cx:c.x,cy:c.y,r:R,class:'draw'});
+    const len=2*Math.PI*R;
+    cir.style.strokeDasharray=len; cir.style.strokeDashoffset=len;
+    cir.style.animation='kdraw 6s ease-in-out infinite'; cir.style.animationDelay=(i*0.28)+'s';
+    el.appendChild(cir);
+  });
+  // pulli dots around the flower
+  for(let i=0;i<6;i++){const a=i*Math.PI/3+Math.PI/6;
+    el.appendChild(svg('circle',{cx:cx+Math.cos(a)*(R*2),cy:cy+Math.sin(a)*(R*2),r:2.4,class:'dot'}));}
+})();
+/* inject kolam draw keyframes */
+const kstyle=document.createElement('style');
+kstyle.textContent='@keyframes kdraw{0%{stroke-dashoffset:var(--o,163)}45%,72%{stroke-dashoffset:0}100%{stroke-dashoffset:-163}}';
+document.head.appendChild(kstyle);
+document.querySelectorAll('.kolam .draw').forEach(c=>{const l=2*Math.PI*26;c.style.setProperty('--o',l);});
+
+/* thoranam: a shallow drape of mango leaves + marigolds across the top */
+(function buildThoranam(){
+  const el=document.getElementById('thoranam'), n=15, dipMax=46;
+  for(let i=0;i<n;i++){
+    const t=i/(n-1);                             // 0..1
+    const left=t*100;
+    const dip=dipMax*(1-Math.pow((t-0.5)*2,2));  // parabola — lower in the middle
+    const h=document.createElement('div'); h.className='hang';
+    h.style.left='calc('+left+'% - 8px)'; h.style.top=(6+dip)+'px';
+    h.style.animationDelay=(-(i*0.2))+'s';
+    h.innerHTML = (i%2===0)
+      ? '<div class="leaf"></div><div class="mari"></div>'
+      : '<div class="leaf"></div>';
+    el.appendChild(h);
+  }
+})();
+
+/* marigold petals + golden sparkles */
+const life=document.getElementById('coverLife');
+const petalCols=['#ffce4d,#e8821e','#ffb33a,#cf5f16','#ffd76a,#f4a400','#ff8f3a,#c0431a']; // marigold tones
+for(let i=0;i<14;i++){                           // sparkles
+  const s=document.createElement('div'); s.className='spark';
+  s.style.left=(5+(i*41)%92)+'%'; s.style.top=(5+(i*59)%90)+'%';
+  s.style.animationDelay=(i*0.26)+'s'; s.style.transform='scale('+(0.5+(i%4)*0.25)+')';
+  life.appendChild(s);
+}
+for(let i=0;i<16;i++){                           // falling marigold petals
+  const p=document.createElement('div'); p.className='petal';
+  p.style.background='linear-gradient(135deg,'+petalCols[i%petalCols.length]+')';
+  p.style.left=((i*6.3)%98)+'%';
+  p.style.animationDuration=(6+(i%5)*1.4)+'s';
+  p.style.animationDelay=(-(i*0.9))+'s';
+  p.style.transform='scale('+(0.7+(i%4)*0.22)+')';
+  life.appendChild(p);
+}
+
+/* 1c. Section ornaments — mandalas, corner kolams, mango-leaf band */
+document.querySelectorAll('.sec-mandala.sm').forEach(buildMandala);
+function buildCornerKolam(el){
+  const cx=45,cy=45,R=15;
+  el.appendChild(svg('circle',{cx,cy,r:R,fill:'none',stroke:'#c29a3d','stroke-width':1.4}));
+  for(let i=0;i<6;i++){const a=i*Math.PI/3;
+    el.appendChild(svg('circle',{cx:cx+Math.cos(a)*R,cy:cy+Math.sin(a)*R,r:R,fill:'none',stroke:'#c29a3d','stroke-width':1.4}));}
+  for(let i=0;i<6;i++){const a=i*Math.PI/3+Math.PI/6;
+    el.appendChild(svg('circle',{cx:cx+Math.cos(a)*(R*2),cy:cy+Math.sin(a)*(R*2),r:1.8,fill:'#9a3a2e'}));}
+}
+document.querySelectorAll('.corner-k.ck').forEach(buildCornerKolam);
+(function(){const b=document.getElementById('mangoBand'); if(!b)return;
+  const n=Math.ceil((b.clientWidth||460)/16); for(let i=0;i<n;i++)b.appendChild(document.createElement('i'));})();
+
+/* 1d. Scratch-to-reveal couple card */
+(function(){
+  const wrap=document.getElementById('scratch'); if(!wrap)return;
+  const cv=document.getElementById('scratchCanvas'), ctx=cv.getContext('2d');
+  let drawing=false, done=false, frames=0;
+  function cover(){
+    const g=ctx.createLinearGradient(0,0,cv.width,cv.height);
+    g.addColorStop(0,'#d9b85f'); g.addColorStop(.5,'#c29a3d'); g.addColorStop(1,'#a67c2e');
+    ctx.globalCompositeOperation='source-over'; ctx.fillStyle=g; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle='rgba(255,255,255,.16)';
+    for(let y=14;y<cv.height;y+=22)for(let x=14;x<cv.width;x+=22){ctx.beginPath();ctx.arc(x,y,1.5,0,7);ctx.fill();}
+    ctx.fillStyle='#5a3310'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    const f=cv.width*0.28; ctx.font='700 '+f+'px Georgia, "Cormorant Garamond", serif';
+    ctx.fillText('L & V', cv.width/2, cv.height/2);
+  }
+  function celebrate(){
+    const burst=document.getElementById('burst'); if(!burst)return;
+    const cols=['#f4a400','#e8821e','#c29a3d','#7c1d2b','#3f7d3a','#ff9fb6','#ffd24a'];
+    const R=(wrap.getBoundingClientRect().width||240)/2;
+    for(let i=0;i<30;i++){
+      const p=document.createElement('i');
+      const ang=(i/30)*Math.PI*2 + Math.random()*0.35;
+      const dist=R*(0.9+Math.random()*0.8);
+      p.style.setProperty('--tx',(Math.cos(ang)*dist).toFixed(0)+'px');
+      p.style.setProperty('--ty',(Math.sin(ang)*dist).toFixed(0)+'px');
+      p.style.setProperty('--rot',(Math.random()*420-210).toFixed(0)+'deg');
+      p.style.background=cols[i%cols.length];
+      if(i%3===0){p.style.width='13px';p.style.height='9px';p.style.borderRadius='60% 60% 60% 60%/80% 80% 40% 40%';}
+      p.style.animationDelay=(Math.random()*0.12).toFixed(2)+'s';
+      burst.appendChild(p);
+      requestAnimationFrame(()=>p.classList.add('on'));
+    }
+    setTimeout(()=>{burst.innerHTML='';},1400);
+  }
+  function size(){ const r=wrap.getBoundingClientRect(); if(!r.width)return;
+    cv.width=Math.round(r.width); cv.height=Math.round(r.height); cover(); }
+  function pt(e){const r=cv.getBoundingClientRect();const t=e.touches?e.touches[0]:e;
+    return{x:(t.clientX-r.left)*(cv.width/r.width),y:(t.clientY-r.top)*(cv.height/r.height)};}
+  function scr(e){ if(!drawing||done)return; e.preventDefault(); const p=pt(e);
+    ctx.globalCompositeOperation='destination-out'; ctx.beginPath();
+    ctx.arc(p.x,p.y,Math.max(16,cv.width*0.085),0,7); ctx.fill(); check(); }
+  function check(){ if(++frames%4)return;
+    const d=ctx.getImageData(0,0,cv.width,cv.height).data; let clr=0,tot=0;
+    for(let i=3;i<d.length;i+=80){tot++; if(d[i]===0)clr++;}
+    if(clr/tot>0.55){ done=true; wrap.classList.add('done'); celebrate();
+      const h=document.getElementById('scratchHint'); if(h){h.textContent='✨ We can’t wait to celebrate with you ✨'; h.classList.add('revealed');} }
+  }
+  const stage=wrap.closest('.scratch-stage');
+  function startScratch(){ if(stage)stage.classList.add('scratching'); }
+  cv.addEventListener('mousedown',e=>{drawing=true;startScratch();scr(e);});
+  window.addEventListener('mouseup',()=>drawing=false);
+  cv.addEventListener('mousemove',scr);
+  cv.addEventListener('touchstart',e=>{drawing=true;startScratch();scr(e);},{passive:false});
+  cv.addEventListener('touchmove',scr,{passive:false});
+  window.addEventListener('touchend',()=>drawing=false);
+  window.addEventListener('resize',()=>{if(!done)size();});
+  if(document.readyState==='complete')size(); else window.addEventListener('load',size);
+  setTimeout(size,300);
+})();
+
+/* 2. Scroll reveals */
+document.querySelectorAll('.reveal').forEach(el=>{
+  ScrollTrigger.create({trigger:el,start:"top 82%",onEnter:()=>el.classList.add('in')});
+});
+
+/* 3. Live countdown */
+const pad=n=>String(n).padStart(2,'0');
+const cd_d=cd=>document.getElementById(cd);
+const D=cd_d('cd-d'),H=cd_d('cd-h'),M=cd_d('cd-m'),S=cd_d('cd-s');
+function tick(){
+  const diff=WEDDING_DATE-new Date();
+  if(diff<=0){D.textContent="🎉";return;}
+  D.textContent=pad(Math.floor(diff/864e5));
+  H.textContent=pad(Math.floor(diff%864e5/36e5));
+  M.textContent=pad(Math.floor(diff%36e5/6e4));
+  S.textContent=pad(Math.floor(diff%6e4/1e3));
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
