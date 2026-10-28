@@ -98,22 +98,27 @@ section > *{position:relative;z-index:1;}
 .gate-inner > *:nth-child(3){animation-delay:.5s}.gate-inner > *:nth-child(4){animation-delay:.68s}
 .gate-inner > *:nth-child(5){animation-delay:.85s}.gate-inner > *:nth-child(6){animation-delay:1.05s}
 @keyframes gateIn{to{opacity:1;transform:none}}
-#enterGate .g-invoke{font-family:var(--serif);font-size:1.15rem;color:#9a3a2e;}
-#enterGate .g-om{font-size:3rem;color:#c29a3d;line-height:1;margin:6px 0 2px;text-shadow:0 0 18px rgba(194,154,61,.55);animation:omGlow 3s ease-in-out infinite;}
-#enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;}
-#enterGate .g-sub{margin:16px auto 0;max-width:24ch;font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:#9a3a2e;line-height:1.9;}
+/* Lord Ganesha — white backdrop blends into the cream via multiply */
+#enterGate .ganesha{display:block;margin:0 auto 4px;width:clamp(128px,40vw,182px);height:auto;
+  mix-blend-mode:multiply;filter:drop-shadow(0 6px 16px rgba(194,154,61,.45));animation:ganeshFloat 4.5s ease-in-out infinite;}
+@keyframes ganeshFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#enterGate .g-invoke{font-family:var(--serif);font-size:1.2rem;color:#9a3a2e;}
+#enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;margin-top:2px;}
+#enterGate .g-sub{margin:16px auto 0;font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#9a3a2e;}
 #enterGate .g-names{font-family:var(--serif);font-size:clamp(2rem,9vw,2.7rem);color:#7c1d2b;margin:6px 0 2px;line-height:1.1;}
 #enterGate .g-amp{font-family:var(--script);color:#c29a3d;}
-#enterGate .g-btn{margin-top:30px;padding:16px 40px;border:2px solid #c29a3d;border-radius:44px;
-  background:linear-gradient(135deg,#8a1f2c,#7c1d2b);color:#fdf4e4;font-family:var(--sans);
-  font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;
-  box-shadow:0 10px 26px rgba(124,29,43,.35),inset 0 1px 0 rgba(255,255,255,.15);animation:pulseBtn 2.2s ease-in-out infinite;}
-#enterGate .g-btn .lotus{display:inline-block;margin-right:7px;animation:lotusBob 2.2s ease-in-out infinite;}
-#enterGate .g-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);
-  transform:translateX(-130%);animation:btnSweep 3s ease-in-out infinite;}
+/* beautiful badge button — double gold ring, shimmer, lotus */
+#enterGate .g-btn{position:relative;margin-top:30px;padding:16px 42px;border:0;border-radius:44px;cursor:pointer;overflow:hidden;
+  background:linear-gradient(135deg,#9c2433,#7c1d2b 60%,#5f141f);color:#fdf4e4;font-family:var(--sans);
+  font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;
+  box-shadow:0 0 0 2px #c29a3d,0 0 0 5px rgba(217,184,95,.45),0 14px 28px rgba(124,29,43,.4),inset 0 1px 0 rgba(255,255,255,.2);
+  animation:pulseBtn 2.4s ease-in-out infinite;}
+#enterGate .g-btn .lotus{display:inline-block;margin-right:8px;animation:lotusBob 2.2s ease-in-out infinite;}
+#enterGate .g-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%);
+  transform:translateX(-140%);animation:btnSweep 3s ease-in-out infinite;}
 @keyframes pulseBtn{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@keyframes lotusBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-3px) rotate(4deg)}}
-@keyframes btnSweep{0%,60%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@keyframes lotusBob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-3px) rotate(5deg)}}
+@keyframes btnSweep{0%,60%{transform:translateX(-140%)}100%{transform:translateX(140%)}}
 
 /* the invitation card, revealed under the video */
 .card-under{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:transparent;}
@@ -375,15 +380,19 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
     </video>
     <div class="tap-start" id="tapStart">Tap to begin ✦</div>
     <div class="scroll-cue">Scroll ↓</div>
-    <!-- welcome gate: one tap opens the invitation AND starts the music -->
+    <!-- welcome gate: animated, with Lord Ganesha -->
     <div id="enterGate">
       <svg class="gate-mandala" id="gateMandala" viewBox="-100 -100 200 200"></svg>
+      <div class="thoranam" id="gateThoranam"></div>
+      <div class="cover-life" id="gateLife"></div>
       <div class="gate-sparks" id="gateSparks"></div>
+      <div class="diya l"><div class="flame"></div><div class="bowl"></div></div>
+      <div class="diya r"><div class="flame"></div><div class="bowl"></div></div>
       <div class="gate-inner">
+        <img class="ganesha" src="ganesha.png" alt="Lord Ganesha">
         <div class="g-invoke">பிள்ளையார் துணை</div>
-        <div class="g-om">ॐ</div>
         <p class="g-bless">Shree Ganeshaya Namaha</p>
-        <p class="g-sub">You're invited to the engagement &amp; registration of</p>
+        <p class="g-sub">You're invited</p>
         <div class="g-names">Lakshan <span class="g-amp">&amp;</span> Vethisha</div>
         <button class="g-btn" type="button"><span class="lotus">🪷</span> Open with Blessings</button>
       </div>
@@ -557,13 +566,27 @@ function enterInvite(){
   setTimeout(()=>{ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },900);
 }
 gate.addEventListener('click',enterInvite);
-/* decorate the welcome gate: rotating mandala + twinkling sparks */
+/* decorate the welcome gate like the cover: mandala, thoranam, petals, sparks, diyas */
 buildMandala(document.getElementById('gateMandala'));
 (function(){const gs=document.getElementById('gateSparks'); if(!gs)return;
   for(let i=0;i<14;i++){const s=document.createElement('i');
     s.style.left=(6+(i*37)%88)+'%'; s.style.top=(8+(i*53)%82)+'%';
     s.style.animationDelay=(i*0.24)+'s'; s.style.transform='scale('+(0.6+(i%3)*0.3)+')';
     gs.appendChild(s);} })();
+(function(){const el=document.getElementById('gateThoranam'); if(!el)return;
+  const n=15,dipMax=46;
+  for(let i=0;i<n;i++){const t=i/(n-1);const dip=dipMax*(1-Math.pow((t-0.5)*2,2));
+    const h=document.createElement('div');h.className='hang';
+    h.style.left='calc('+(t*100)+'% - 8px)';h.style.top=(6+dip)+'px';h.style.animationDelay=(-(i*0.2))+'s';
+    h.innerHTML=(i%2===0)?'<div class="leaf"></div><div class="mari"></div>':'<div class="leaf"></div>';
+    el.appendChild(h);} })();
+(function(){const gl=document.getElementById('gateLife'); if(!gl)return;
+  const cols=['#ffce4d,#e8821e','#ffb33a,#cf5f16','#ffd76a,#f4a400','#ff8f3a,#c0431a'];
+  for(let i=0;i<12;i++){const p=document.createElement('div');p.className='petal';
+    p.style.background='linear-gradient(135deg,'+cols[i%cols.length]+')';
+    p.style.left=((i*8.1)%96)+'%';p.style.animationDuration=(6+(i%5)*1.4)+'s';
+    p.style.animationDelay=(-(i*0.9))+'s';p.style.transform='scale('+(0.7+(i%4)*0.22)+')';
+    gl.appendChild(p);} })();
 
 /* safety net: reveal anyway if the video never loads/plays */
 setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
