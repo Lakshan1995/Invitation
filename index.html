@@ -99,13 +99,13 @@ section > *{position:relative;z-index:1;}
 .gate-inner > *:nth-child(5){animation-delay:.85s}.gate-inner > *:nth-child(6){animation-delay:1.05s}
 @keyframes gateIn{to{opacity:1;transform:none}}
 /* Lord Ganesha — white backdrop blends into the cream via multiply */
-#enterGate .ganesha{display:block;margin:0 auto 4px;width:clamp(130px,42vw,186px);height:auto;
+#enterGate .ganesha{display:block;margin:0 auto 6px;width:clamp(155px,50vw,224px);height:auto;
   filter:drop-shadow(0 6px 18px rgba(194,154,61,.5));
   animation:gateIn 1s ease .15s forwards, ganeshFloat 4.5s ease-in-out 1.3s infinite;}
 @keyframes ganeshFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 #enterGate .g-invoke{font-family:var(--serif);font-size:1.2rem;color:#9a3a2e;}
 #enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;margin-top:2px;}
-#enterGate .g-sub{margin:16px auto 0;font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#9a3a2e;}
+#enterGate .g-sub{margin:16px auto 0;max-width:26ch;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:#9a3a2e;line-height:2;}
 #enterGate .g-names{font-family:var(--serif);font-size:clamp(2rem,9vw,2.7rem);color:#7c1d2b;margin:6px 0 2px;line-height:1.1;}
 #enterGate .g-amp{font-family:var(--script);color:#c29a3d;}
 /* beautiful badge button — double gold ring, shimmer, lotus */
@@ -393,7 +393,7 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
         <img class="ganesha" src="ganesha.png?v=2" alt="Lord Ganesha">
         <div class="g-invoke">பிள்ளையார் துணை</div>
         <p class="g-bless">Shree Ganeshaya Namaha</p>
-        <p class="g-sub">You're invited</p>
+        <p class="g-sub">You're invited to the<br>Engagement &amp; Registration of</p>
         <div class="g-names">Lakshan <span class="g-amp">&amp;</span> Vethisha</div>
         <button class="g-btn" type="button"><span class="lotus">🪷</span> Open with Blessings</button>
       </div>
