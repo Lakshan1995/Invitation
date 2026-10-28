@@ -99,8 +99,8 @@ section > *{position:relative;z-index:1;}
 .gate-inner > *:nth-child(5){animation-delay:.85s}.gate-inner > *:nth-child(6){animation-delay:1.05s}
 @keyframes gateIn{to{opacity:1;transform:none}}
 /* Lord Ganesha — white backdrop blends into the cream via multiply */
-#enterGate .ganesha{display:block;margin:0 auto 4px;width:clamp(128px,40vw,182px);height:auto;
-  mix-blend-mode:multiply;filter:drop-shadow(0 6px 16px rgba(194,154,61,.45));animation:ganeshFloat 4.5s ease-in-out infinite;}
+#enterGate .ganesha{display:block;margin:0 auto 4px;width:clamp(130px,42vw,186px);height:auto;
+  filter:drop-shadow(0 6px 18px rgba(194,154,61,.5));animation:ganeshFloat 4.5s ease-in-out infinite;}
 @keyframes ganeshFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 #enterGate .g-invoke{font-family:var(--serif);font-size:1.2rem;color:#9a3a2e;}
 #enterGate .g-bless{font-family:var(--serif);font-style:italic;font-size:.95rem;color:#8a5a1e;margin-top:2px;}
@@ -533,7 +533,9 @@ footer .namaskaram{margin-top:20px;font-size:1.1rem;color:#fdf4e4;letter-spacing
 /* ⚙️ Registration date: 24 Jan 2027, 10:30 AM  (month is 0-indexed → Jan = 0) */
 const WEDDING_DATE = new Date(2027, 0, 24, 10, 30, 0);
 
-gsap.registerPlugin(ScrollTrigger);
+/* GSAP is optional — if the CDN fails, the rest of the page must still work */
+const HAS_GSAP = (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined');
+if (HAS_GSAP) gsap.registerPlugin(ScrollTrigger);
 
 /* 0. Background music — starts on first interaction, toggle with the ♪ button */
 const bgm=document.getElementById('bgm'), mBtn=document.getElementById('musicToggle');
@@ -566,27 +568,7 @@ function enterInvite(){
   setTimeout(()=>{ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },900);
 }
 gate.addEventListener('click',enterInvite);
-/* decorate the welcome gate like the cover: mandala, thoranam, petals, sparks, diyas */
-buildMandala(document.getElementById('gateMandala'));
-(function(){const gs=document.getElementById('gateSparks'); if(!gs)return;
-  for(let i=0;i<14;i++){const s=document.createElement('i');
-    s.style.left=(6+(i*37)%88)+'%'; s.style.top=(8+(i*53)%82)+'%';
-    s.style.animationDelay=(i*0.24)+'s'; s.style.transform='scale('+(0.6+(i%3)*0.3)+')';
-    gs.appendChild(s);} })();
-(function(){const el=document.getElementById('gateThoranam'); if(!el)return;
-  const n=15,dipMax=46;
-  for(let i=0;i<n;i++){const t=i/(n-1);const dip=dipMax*(1-Math.pow((t-0.5)*2,2));
-    const h=document.createElement('div');h.className='hang';
-    h.style.left='calc('+(t*100)+'% - 8px)';h.style.top=(6+dip)+'px';h.style.animationDelay=(-(i*0.2))+'s';
-    h.innerHTML=(i%2===0)?'<div class="leaf"></div><div class="mari"></div>':'<div class="leaf"></div>';
-    el.appendChild(h);} })();
-(function(){const gl=document.getElementById('gateLife'); if(!gl)return;
-  const cols=['#ffce4d,#e8821e','#ffb33a,#cf5f16','#ffd76a,#f4a400','#ff8f3a,#c0431a'];
-  for(let i=0;i<12;i++){const p=document.createElement('div');p.className='petal';
-    p.style.background='linear-gradient(135deg,'+cols[i%cols.length]+')';
-    p.style.left=((i*8.1)%96)+'%';p.style.animationDuration=(6+(i%5)*1.4)+'s';
-    p.style.animationDelay=(-(i*0.9))+'s';p.style.transform='scale('+(0.7+(i%4)*0.22)+')';
-    gl.appendChild(p);} })();
+/* (welcome-gate decoration runs lower down, after SVGNS/svg/buildMandala are defined) */
 
 /* safety net: reveal anyway if the video never loads/plays */
 setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
@@ -608,6 +590,28 @@ function buildMandala(el){
 }
 buildMandala(document.getElementById('mandala1'));
 buildMandala(document.getElementById('mandala2'));
+
+/* decorate the welcome gate like the cover: mandala, thoranam, petals, sparks */
+(function(){const gm=document.getElementById('gateMandala'); if(gm)buildMandala(gm);})();
+(function(){const gs=document.getElementById('gateSparks'); if(!gs)return;
+  for(let i=0;i<14;i++){const s=document.createElement('i');
+    s.style.left=(6+(i*37)%88)+'%'; s.style.top=(8+(i*53)%82)+'%';
+    s.style.animationDelay=(i*0.24)+'s'; s.style.transform='scale('+(0.6+(i%3)*0.3)+')';
+    gs.appendChild(s);} })();
+(function(){const el=document.getElementById('gateThoranam'); if(!el)return;
+  const n=15,dipMax=46;
+  for(let i=0;i<n;i++){const t=i/(n-1);const dip=dipMax*(1-Math.pow((t-0.5)*2,2));
+    const h=document.createElement('div');h.className='hang';
+    h.style.left='calc('+(t*100)+'% - 8px)';h.style.top=(6+dip)+'px';h.style.animationDelay=(-(i*0.2))+'s';
+    h.innerHTML=(i%2===0)?'<div class="leaf"></div><div class="mari"></div>':'<div class="leaf"></div>';
+    el.appendChild(h);} })();
+(function(){const gl=document.getElementById('gateLife'); if(!gl)return;
+  const cols=['#ffce4d,#e8821e','#ffb33a,#cf5f16','#ffd76a,#f4a400','#ff8f3a,#c0431a'];
+  for(let i=0;i<12;i++){const p=document.createElement('div');p.className='petal';
+    p.style.background='linear-gradient(135deg,'+cols[i%cols.length]+')';
+    p.style.left=((i*8.1)%96)+'%';p.style.animationDuration=(6+(i%5)*1.4)+'s';
+    p.style.animationDelay=(-(i*0.9))+'s';p.style.transform='scale('+(0.7+(i%4)*0.22)+')';
+    gl.appendChild(p);} })();
 
 /* kolam: a flower-of-circles rangoli that draws itself, with pulli (dots) */
 (function buildKolam(){
@@ -741,10 +745,14 @@ document.querySelectorAll('.corner-k.ck').forEach(buildCornerKolam);
   setTimeout(size,300);
 })();
 
-/* 2. Scroll reveals */
-document.querySelectorAll('.reveal').forEach(el=>{
-  ScrollTrigger.create({trigger:el,start:"top 82%",onEnter:()=>el.classList.add('in')});
-});
+/* 2. Scroll reveals (fall back to showing everything if GSAP is unavailable) */
+if (HAS_GSAP) {
+  document.querySelectorAll('.reveal').forEach(el=>{
+    ScrollTrigger.create({trigger:el,start:"top 82%",onEnter:()=>el.classList.add('in')});
+  });
+} else {
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
 
 /* 3. Live countdown */
 const pad=n=>String(n).padStart(2,'0');
