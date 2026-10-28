@@ -567,15 +567,14 @@ function enterInvite(){
   document.documentElement.style.overflow=''; document.body.style.overflow='';   // unlock scroll
   gate.classList.add('gone');
   try{ vid.currentTime=0; }catch(e){}
-  vid.play().catch(()=>{});
+  vid.play().catch(()=>{ reveal(); });   // if the video can't play at all, go straight to content
   musicOn();
+  /* safety net measured from the CLICK (not page load): reveal if the video never progresses */
+  setTimeout(()=>{ if(!revealed && vid.currentTime < 0.3) reveal(); }, 9000);
   setTimeout(()=>{ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },900);
 }
 gate.addEventListener('click',enterInvite);
 /* (welcome-gate decoration runs lower down, after SVGNS/svg/buildMandala are defined) */
-
-/* safety net: reveal anyway if the video never loads/plays */
-setTimeout(()=>{ if(vid.currentTime<0.2) reveal(); }, 9000);
 
 /* 1b. Populate the Hindu cover: mandala, thoranam, kolam, marigold petals, sparkles */
 const SVGNS="http://www.w3.org/2000/svg";
